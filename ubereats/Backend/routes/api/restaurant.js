@@ -170,15 +170,13 @@ router.post('/order_list'
     const {rest_name} = req.body;
     try{  
        
-        connection.query(`SELECT * FROM ord_list where rest_name=?`,rest_name,  function(error,results){
-        if(results.length !== 0){
-            console.log(results);
-            res.send(JSON.stringify(results));
-         }else{
-            res.send("failure");
-         }
-        
-     });
+      Item.find({rest_name : rest_name}, function(err,doc){
+        if(err) throw err;
+        if(doc){
+            console.log(doc);
+            res.send(doc);
+        }
+      })
     }
     catch(err){
         console.error(err.message);

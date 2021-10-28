@@ -1,58 +1,3 @@
-/*
-import React,{Fragment, useEffect,useState} from 'react';
-import axios from 'axios';
-import Rest_land_comp from './Rest_land_comp';
-
-
-function Rest_landing(a,b) {    
-    console.log(a);
-    console.log(b);
-    var c = a;
-    console.log(String(c));
-    return (
-        <div>
-            <Rest_land_comp data={c}/>
-                     
-        </div>
-    )
-}
-
-export default Rest_landing;
-*/
-/*
-const Rest_landing = () => {
-    const [peeps, setPeeps] = useState([]);
-    console.log("abcd");  
-    //var c=String("mr.biryani");
-    async function getData() {
-        const req = await axios.post('/api/restaurant/order_list',{name:"mr.biryani"});
-        console.log(req);
-        setPeeps(req);
-      }
-    useEffect(() => {getData();}, [])
-    
-    //console.log(a);
-    //console.log(b);
-    
-    let details = peeps.map(book => {
-        return(
-            <tr>
-                <td>{book.rest_name}</td>
-                <td>{book.item}</td>
-                
-            </tr>
-        )
-    })
-    return (
-            <div>
-                <p> a </p>
-                {details}
-            </div>
-    )
-}
-
-export default Rest_landing;
-*/
 
 
 import React,{Fragment, useEffect,useState} from 'react'
@@ -91,7 +36,7 @@ const Rest_landing = (props)=> {
                 </div>
             )
         }
-      
+        console.log(req.data);
         setPeople(req.data);
       }
 
@@ -131,7 +76,7 @@ const Rest_landing = (props)=> {
             setCart([...cart,el]);
             setAlert("");
         }
-        else setAlert(`${el.item} is already in your cart`);
+        else setAlert(`${el.item_name} is already in your cart`);
     } 
     const removecart = (el) => {
         let hardCopy = [...cart];
@@ -157,7 +102,7 @@ const Rest_landing = (props)=> {
         return(
             <tr>
                 
-                <td>{book.item}</td>
+                <td>{book.item_name}</td>
                 <td>{book.foodtype}</td>
                 <td>{book.price}</td>
 
@@ -188,7 +133,7 @@ const Rest_landing = (props)=> {
            <tr>
                <br></br>
                 <tr>Restaurant Name: &nbsp; {book.rest_name}</tr>
-                <tr>Item:       &nbsp;     {book.item}</tr>
+                <tr>Item:       &nbsp;     {book.item_name}</tr>
                 <tr>Food Type:  &nbsp;     {book.foodtype}</tr>
                 <tr>Quantity:  &nbsp;     {book.quantity}</tr>
                 <tr>Price:    &nbsp;       {book.price}</tr>
@@ -201,7 +146,7 @@ const Rest_landing = (props)=> {
     let cartItems = cart.map((el) => (
         <tr>
             <td>{el.rest_name}</td>
-            <td>{el.item}</td>
+            <td>{el.item_name}</td>
             <td>{el.quantity}</td>
             <td><button onClick={()=> removecart(el)}>Remove from cart</button></td>
             

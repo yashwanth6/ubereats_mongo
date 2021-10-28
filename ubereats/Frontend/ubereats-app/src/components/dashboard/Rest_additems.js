@@ -12,12 +12,12 @@ export const Rest_additems= ({setAlert}) => {
     var e=localStorage.getItem('email');
     const [formData, setFormData] = useState({
         email:e,
-        item: '',
+        item_name: '',
         foodtype: '',
         price:'',
     });
    
-    const {email,item,foodtype,price} = formData;
+    const {email,item_name,foodtype,price} = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name] : e.target.value});
 
@@ -29,7 +29,7 @@ export const Rest_additems= ({setAlert}) => {
                     'Content-Type': 'application/json'
                 }
             }
-            const body = JSON.stringify({email,item,foodtype,price});
+            const body = JSON.stringify({email,item_name,foodtype,price});
             const req = await axios.post('/api/restaurant/add_items',body,config);
             if(req.data === 'success'){
                 alert("Item added Successfully!");
@@ -51,12 +51,12 @@ export const Rest_additems= ({setAlert}) => {
             <h2 className="form-title">Register Here!!</h2>
                 
             <div className="form-group">
-            <label htmlFor="item"><b>Item</b></label>
+            <label htmlFor="item_name"><b>Item</b></label>
             <input className='form-control' 
                     type="text" 
                     placeholder="Enter Item name"
-                    name='item'
-                    value={item}
+                    name='item_name'
+                    value={item_name}
                     onChange={e => onChange(e)}
                     required pattern="[A-Za-z ]{2,}"
                  />   

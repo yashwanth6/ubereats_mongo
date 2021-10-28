@@ -1,0 +1,5 @@
+{
+   "mongoURI":"mongodb+srv://yashwanth6:yashwanth6@ubereats.nzpmz.mongodb.net/Demo?retryWrites=true&w=majority",
+   "jwtSecret": "mytoken"
+}
+

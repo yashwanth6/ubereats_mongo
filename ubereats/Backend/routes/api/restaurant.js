@@ -15,6 +15,7 @@ const normalize = require('normalize-url');
 const User = require('../../models/User');
 const Owner=require('../../models/R_Owner');
 const Item=require('../../models/Item_List');
+const Order=require('../../models/Orders');
 const e = require('express');
 
 router.use(express.urlencoded({extended: true}));
@@ -296,16 +297,32 @@ router.post('/cart'
   , async (req,res) => {
     console.log(req.body);
     const {rest_name,email,total,delivery} = req.body;
-    //const email=JSON.stringify("Hi "+req.body.email);
-    var it=JSON.stringify(req.body.cart);
+    const it=JSON.parse(JSON.stringify(req.body.cart));
     console.log("hi:   "+it);
     try{   
        
-            connection.query(`Insert into orders(rest_name,items,price,foodstatus,email,delivery) values(?,?,?,?,?,?)`,[rest_name,
-            it,total,"active",email,delivery],  function(error,results){
-            console.log(results);
-            res.send(JSON.stringify(results));
-            });
+            // connection.query(`Insert into orders(rest_name,items,price,foodstatus,email,delivery) values(?,?,?,?,?,?)`,[rest_name,
+            // it,total,"active",email,delivery],  function(error,results){
+            // console.log(results);
+            // res.send(JSON.stringify(results));
+            // });
+            if(true){
+                order = new Order({
+                  rest_name,
+                  items:it,
+                  price:total,
+                  foodstatus:"active",
+                  email,
+                  delivery
+                });
+                
+                order.save();
+                res.send("success");
+              }
+              else{
+                console.log("Item cant be added!");
+              }
+
          }
         
     
@@ -464,15 +481,13 @@ router.put('/addfavorite'
   , async (req,res) => {
       const {favorite,email} = req.body;
       try{   
-       
-        connection.query(`update users set favorite=? where email=?`,[favorite,email],  function(error,results){
-            console.log(results);
-            if(results.length !== 0){
-                res.send("success");
-             }else{
-                res.send("failure");
-             }
-        });
+       console.log(req.body.favorite);
+       User.findOneAndUpdate({email},{$push:{favorite:favorite}},function(err,doc){
+         if(doc){
+           console.log("hurray!");
+         }
+              res.send("success");
+       });
     }
     catch(err){
         console.error(err.message);
@@ -487,19 +502,23 @@ router.put('/addfavorite'
       const {email} = req.body;
       try{   
        
-        connection.query(`select favorite from users where email=?`,email,  function(error,results){
-            results=JSON.parse(JSON.stringify(results));
-            console.log(results[0].favorite)
-            connection.query(`select * from restaurant where name=?`,results[0].favorite,  function(error,results){
-                if(results.length !== 0){
-                    res.send(JSON.stringify(results));
-                 }else{
-                    res.send("failure");
-                 }
-            });
-           
-           
-        });
+        User.findOne({email:email},function(err,doc){
+          if(err) throw err;
+          if(doc){
+            console.log(doc.favorite);
+            var fav=doc.favorite
+            Owner.find({name:fav},function(err,doc1){
+              if(doc1){
+                console.log(doc1);
+                   res.send(doc1);
+              }
+              else{
+                console.log("Not found!");
+              }
+            })
+          }
+ 
+     });
     }
     catch(err){
         console.error(err.message);

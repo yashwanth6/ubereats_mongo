@@ -33,7 +33,10 @@ const UserSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
-  }
+  },
+  favorite:[{
+    type:String
+  }]
 });
 
 module.exports = mongoose.model('user', UserSchema);

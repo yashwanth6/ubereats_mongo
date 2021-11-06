@@ -22,6 +22,10 @@ const ItemSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  quantity:{
+    type: Number,
+    default: 0
+  },
   date: {
     type: Date,
     default: Date.now

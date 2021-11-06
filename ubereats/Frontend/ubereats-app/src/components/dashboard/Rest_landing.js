@@ -67,12 +67,16 @@ const Rest_landing = (props)=> {
         setCarttotal(totalVal);
     }
     const addcart = (el) => {
+        
         let addIt = true;
+        console.log(cart);
         for(let i = 0; i< cart.length;i++)
         {
-            if(cart[i].id === el.id) addIt = false; 
+            console.log(cart[i]._id+"       "+el._id);
+            if(cart[i]._id === el._id) addIt = false; 
         }
         if(addIt) {
+            console.log("added");
             setCart([...cart,el]);
             setAlert("");
         }

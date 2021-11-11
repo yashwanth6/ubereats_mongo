@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const app = express();
-
+var kafka = require('./kafka/client');
 
 var cors = require('cors');
 const connectDB = require('./config/db');
@@ -32,6 +32,28 @@ app.get('/test_api',async function(req,res){
     });
 });
 
+app.post('/book', function(req, res){
+
+    kafka.make_request('post_book',req.body, function(err,results){
+        console.log('in result');
+        console.log(results);
+        if (err){
+            console.log("Inside err");
+            res.json({
+                status:"error",
+                msg:"System Error, Try Again."
+            })
+        }else{
+            console.log("Inside else");
+                res.json({
+                    updatedList:results
+                });
+
+                res.end();
+            }
+        
+    });
+});
 // app.post('/create',async function(req,res){
 //     await connection.query(`Insert into test_table(uname,email,password)values(?,?,?)`,[req.body.uname,
 //         request.body.email,request.body.password], async function(error,results){

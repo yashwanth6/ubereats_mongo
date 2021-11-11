@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+var kafka = require('../../kafka/client');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
@@ -25,6 +26,7 @@ router.get('/', auth, async (req, res) => {
 // @route    POST api/auth
 // @desc     Authenticate user & get token
 // @access   Public
+/*
 router.post(
   '/',
   check('email', 'Please include a valid email').isEmail(),
@@ -75,5 +77,20 @@ router.post(
     }
   }
 );
+
+*/
+
+router.post('/', function(req, res){
+
+  kafka.make_request('login',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.json(results);
+  });
+});
+
+
+
+
 
 module.exports = router;

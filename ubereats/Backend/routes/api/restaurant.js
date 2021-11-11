@@ -7,6 +7,7 @@ const gravatar = require('gravatar');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+var kafka = require('../../kafka/client');
 var cors = require('cors');
 const {check, validationResult} = require('express-validator');
 //const app = express();
@@ -125,7 +126,16 @@ router.post('/login', [
 }
 );
 
+router.post('/rest_list', function(req, res){
 
+  kafka.make_request('rest_list',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
+});
+
+/*
 router.post('/rest_list'
   , async (req,res) => {
 
@@ -162,7 +172,7 @@ router.post('/rest_list'
           }
         });
 
-
+*/
 router.post('/order_list'
   , async (req,res) => {
 
@@ -338,11 +348,18 @@ router.post('/getorders'
     console.log(req.body);
     const {email} = req.body;
     try{   
-       
-            connection.query(`select * from orders where email=?`,email,  function(error,results){
-            console.log(results);
-            res.send(JSON.stringify(results));
-            });
+       Order.find({email:email},function(err,doc){
+        if(err) throw err;
+        console.log(doc);
+        //console.log(JSON.parse(doc.items));
+        if(doc){
+          res.send(doc);
+        }
+        else{
+          console.log("Error!");
+        }
+
+   });
          }
         
     

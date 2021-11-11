@@ -6,12 +6,13 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const normalize = require('normalize-url');
-
+var kafka = require('../../kafka/client');
 const User = require('../../models/User');
 
 // @route    POST api/users
 // @desc     Register user
 // @access   Public
+/*
 router.post(
   '/',
   check('name', 'Name is required').not().isEmpty(),
@@ -82,8 +83,20 @@ router.post(
     }
   }
 );
+*/
+router.post('/', function(req, res){
 
-
+  kafka.make_request('register',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      if(results.status==400){
+        res.send("failure");
+      }
+      else{
+      res.json(results);
+      }
+  });
+});
 
 
 module.exports = router;

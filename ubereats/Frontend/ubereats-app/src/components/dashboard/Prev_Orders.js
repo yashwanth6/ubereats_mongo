@@ -15,29 +15,33 @@ const Prev_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
     useEffect(() => {
       async function fetchData() {
         const req = await axios.post('/api/restaurant/getorders',{email:localStorage.getItem('email')});
-      
+        console.log(req.data);
         setPeople(req.data);
       }
 
       fetchData();
     }, [])
 
-    let details = people.map(book => {
-        
+    let details = people.map((ite) => {
+        let arrit=ite.items;
         return(
+        <tr>
+
+        
+        <td>{ite._id}</td>
+       <td> {arrit.map((book) => {
+            //console.log(book);
+            return(
             <tr>
-                <td>{book.rest_name}</td>
-                <td>{JSON.parse(book.items).map(tb => {return(
-                     <tr>
-                    <tr>ID: {tb.id}</tr>
-                    <tr>Item name: {tb.item}</tr>
-                    <tr>Item Type: {tb.foodtype}</tr>
-                    <tr>Price: {tb.price}</tr>
-                    <tr>Quantity: {tb.quantity}</tr>
-                    </tr>)})}
-                </td>
-                <td>{book.foodstatus}</td>
-                <td>{book.delivery}</td>
+                <tr>{book.item_name}</tr>
+                <tr>{book.quantity}</tr>
+            </tr>
+        )  
+            })
+        }
+            </td>
+            <td>{ite.price}</td>
+            <td>{ite.foodstatus}</td>
             </tr>
         )
     })

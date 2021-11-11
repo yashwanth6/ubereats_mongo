@@ -33,12 +33,18 @@ export const register = formData => async dispatch => {
     try {
         
       const res = await axios.post('/api/users', formData);
-  
+      console.log(res.data);
+      if(res.data !== "failure"){
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
       });
-      dispatch(loadUser());
+      alert("User successfully registered!");
+    }
+    else{
+          alert("User already exists")
+    }
+      //dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
   

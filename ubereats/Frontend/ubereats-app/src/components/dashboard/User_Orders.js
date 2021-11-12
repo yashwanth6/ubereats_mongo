@@ -45,7 +45,7 @@ const User_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
     useEffect(() => {
       async function fetchData() {
         const req = await axios.post('/api/restaurant/getrestorders',{email:localStorage.getItem('email')});
-      
+      console.log(req.data);
         setPeople(req.data);
       }
 
@@ -57,33 +57,33 @@ const User_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
         
         return(
             <tr>
-                <td>{book.orderid}</td>
+                <td>{book._id}</td>
                 <td>{book.email}</td>
-                <td>{JSON.parse(book.items).map(tb => {return(
+                <td>{book.items.map(tb => {return(
                      <tr>
-                    <tr>ID: {tb.id}</tr>
-                    <tr>Item name: {tb.item}</tr>
+                    <tr>ID: {tb._id}</tr>
+                    <tr>Item name: {tb.item_name}</tr>
                     <tr>Item Type: {tb.foodtype}</tr>
                     <tr>Price: {tb.price}</tr>
                     </tr>)})}
                 </td>
-                <td>{book.delivery}</td>
+                <td>{book.foodstatus}</td>
                 <td>
                     
                 <Link to ="/Completed_Orders">
-                <button onClick={(e)=> sub(book.orderid)}>
+                <button onClick={(e)=> sub(book._id)}>
                                     Completed
                                 </button>
                 </Link>
 
                 <Link to ="/Rest_Dash">
-                <button onClick={(e)=> sub1(book.orderid)}>
+                <button onClick={(e)=> sub1(book._id)}>
                                     In-kitchen
                                 </button>
                 </Link>
 
                 <Link to ="/Rest_Dash">
-                <button onClick={(e)=> sub2(book.orderid)}>
+                <button onClick={(e)=> sub2(book._id)}>
                                     Delivered
                                 </button>
                 </Link>

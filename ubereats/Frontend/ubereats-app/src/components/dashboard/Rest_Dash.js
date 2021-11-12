@@ -31,7 +31,7 @@ const Rest_Dash = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=> 
                 <td>{book.price}</td>
                 <td>
                     <Link to ="/EditOrders">
-                    <button onClick={()=> localStorage.setItem('edit',book.id)}>Edit</button>
+                    <button onClick={()=> localStorage.setItem('edit',book._id)}>Edit</button>
                     </Link>
                 </td>
             </tr>

@@ -151,7 +151,7 @@ export const login = ({ email, password}) => async dispatch =>{
                         type: LOGIN_SUCCESS,
                         payload: res.data
                     });
-                    dispatch(loadUser());
+                    //dispatch(loadUser());
                     
                  }}
                  else{

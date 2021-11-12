@@ -176,41 +176,22 @@ router.post('/rest_list'
 router.post('/order_list'
   , async (req,res) => {
 
-    console.log(req.body);
-    
-    const {rest_name} = req.body;
-    try{  
-       
-      Item.find({rest_name : rest_name}, function(err,doc){
-        if(err) throw err;
-        if(doc){
-            console.log(doc);
-            res.send(doc);
-        }
-      })
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('orderlist',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 
 router.put('/changeprofile'
   , async (req,res) => {
   
-    const {email,uname,location,dateofbirth,mobile,nickname} = req.body;
-    try{  
-      User.findOneAndUpdate({email:email},req.body)
-      .then((result) =>{
-         //console.log(result);
-         res.send("success");
-      })
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('changeprofile',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 
@@ -221,15 +202,22 @@ router.post('/getprofile'
     
     const {email} = req.body;
     try{  
-        connection.query(`select * from users where email`,email,  function(error,results){
-        if(results.length !== 0){
-            console.log(results);
-            res.send(JSON.stringify(results));
-         }else{
-            res.send("failure");
-         }
+    //     connection.query(`select * from users where email`,email,  function(error,results){
+    //     if(results.length !== 0){
+    //         console.log(results);
+    //         res.send(JSON.stringify(results));
+    //      }else{
+    //         res.send("failure");
+    //      }
         
-     });
+    //  });
+    User.find({email:email},function(err,doc){
+      if(err) throw err;
+      if(doc){
+          console.log(doc);
+          res.send(doc);
+      }
+    })
     }
     catch(err){
         console.error(err.message);
@@ -243,120 +231,91 @@ router.post('/getprofile'
 router.post('/add_items'
   , async (req,res) => {
 
-    console.log(req.body);
-    
-    const {email,item_name,foodtype,price} = req.body;
+    kafka.make_request('additems',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
+});
    
-    try{   
-      let ob = await Owner.findOne({ email });
-      if(ob){
-          item = new Item({
-            rest_name:ob.name,
-            item_name,
-            foodtype,
-            price
-          });
-          
-          item.save();
-          res.send("success");
-        }
-        else{
-          console.log("Item cant be added!");
-        }
-
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
-}
-);
+    
+        
 
 router.post('/get_items'
   , async (req,res) => {
-
-    console.log(req.body);
-    
-    const {email} = req.body;
-    try{  
-        Owner.findOne({email:email},function(err,doc){
-          if(err) throw err;
-          if(doc){
-            console.log(doc.name);
-            Item.find({rest_name:doc.name},function(err,doc1){
-              if(doc1){
-                   res.send(doc1);
-              }
-              else{
-                console.log("Not found!");
-              }
-            })
-          }
- 
-     });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('getitems',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 
 
 router.post('/cart'
   , async (req,res) => {
-    console.log(req.body);
-    const {rest_name,email,total,delivery} = req.body;
-    const it=JSON.parse(JSON.stringify(req.body.cart));
-    console.log("hi:   "+it);
-    try{   
-       
-            // connection.query(`Insert into orders(rest_name,items,price,foodstatus,email,delivery) values(?,?,?,?,?,?)`,[rest_name,
-            // it,total,"active",email,delivery],  function(error,results){
-            // console.log(results);
-            // res.send(JSON.stringify(results));
-            // });
-            if(true){
-                order = new Order({
-                  rest_name,
-                  items:it,
-                  price:total,
-                  foodstatus:"active",
-                  email,
-                  delivery
-                });
-                
-                order.save();
-                res.send("success");
-              }
-              else{
-                console.log("Item cant be added!");
-              }
-
-         }
-        
-    
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('cart',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 
 router.post('/getorders'
   , async (req,res) => {
-    console.log(req.body);
-    const {email} = req.body;
+    kafka.make_request('getorders',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
+    
+}
+);
+
+router.post('/getrestorders'
+  , async (req,res) => {
+    kafka.make_request('getrestorders',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
+    
+}
+);
+
+
+
+router.put('/updatestatus'
+  , async (req,res) => {
+    kafka.make_request('updatestatus',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
+}
+);
+
+
+router.post('/getcompletedorders'
+  , async (req,res) => {
+    //console.log("This is:"+req.body);
+    const email = req.body.email;
     try{   
-       Order.find({email:email},function(err,doc){
+       
+      Owner.findOne({email:email},function(err,doc){
         if(err) throw err;
-        console.log(doc);
-        //console.log(JSON.parse(doc.items));
         if(doc){
-          res.send(doc);
-        }
-        else{
-          console.log("Error!");
+          console.log(doc.name);
+          Order.find({rest_name:doc.name,foodstatus:"completed"},function(err,doc1){
+            if(doc1){
+              console.log(doc1);
+                 res.send(doc1);
+            }
+            else{
+              console.log("Not found!");
+            }
+          })
         }
 
    });
@@ -370,248 +329,82 @@ router.post('/getorders'
 }
 );
 
-router.post('/getrestorders'
-  , async (req,res) => {
-    //console.log("This is:"+req.body);
-    const email = req.body.email;
-    try{   
-       
-            connection.query(`select name from restaurant where email=?`,email,  function(error,results){
-            var results=JSON.parse(JSON.stringify(results));
-            console.log(results[0].name);
-            connection.query(`select * from orders where rest_name=? and foodstatus=?`,[results[0].name,"active"],
-              function(error,results){
-                console.log("jabbbbb "+ results);
-                res.send(JSON.stringify(results));
-            });
-           
-            });
-         }
-        
-    
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
-}
-);
-
-
-
-router.put('/updatestatus'
-  , async (req,res) => {
-
-    const {status} = req.body;
-    try{  
-        connection.query(`UPDATE orders set foodstatus=? where orderid=?`,["completed",status],  function(error,results){
-        if(results.length !== 0){
-            console.log(results);
-            res.send(JSON.stringify(results));
-         }else{
-            res.send("failure");
-         }
-        
-     });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
-}
-);
-
-
-router.post('/getcompletedorders'
-  , async (req,res) => {
-    //console.log("This is:"+req.body);
-    const email = req.body.email;
-    try{   
-       
-            connection.query(`select name from restaurant where email=?`,email,  function(error,results){
-            var results=JSON.parse(JSON.stringify(results));
-            console.log(results[0].name);
-            connection.query(`select * from orders where rest_name=? and foodstatus=?`,[results[0].name,"completed"],
-              function(error,results){
-                console.log("jabbbbb "+ results);
-                res.send(JSON.stringify(results));
-            });
-           
-            });
-         }
-        
-    
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
-}
-);
-
 
 router.post('/getoneorder'
   , async (req,res) => {
-      const id=req.body.id;
-      try{   
-       
-        connection.query(`select * from ord_list where id=?`,id,  function(error,results){
-            console.log(results);
-            if(results.length !== 0){
-                res.send(JSON.stringify(results));
-             }else{
-                res.send("failure");
-             }
-        });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
-
+    kafka.make_request('getoneorder',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
   });
 
 
 
   router.put('/edit_orders'
   , async (req,res) => {
-
-    const {item,foodtype,price,id} = req.body;
-    try{  
-        connection.query(`UPDATE ord_list set item=?,foodtype=?,price=? where id=?`,
-        [item,foodtype,price,id],  function(error,results){
-        if(results.length !== 0){
-            console.log(results);
-            res.send("success");
-         }else{
-            res.send("failure");
-         }
-        
-     });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    console.log("hjjjjjjhgggg");
+    console.log(req.body);
+    kafka.make_request('editorders',req.body, function(err,results){
+      console.log('in result');
+      console.log("--------------------");
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 
 router.put('/addfavorite'
   , async (req,res) => {
-      const {favorite,email} = req.body;
-      try{   
-       console.log(req.body.favorite);
-       User.findOneAndUpdate({email},{$push:{favorite:favorite}},function(err,doc){
-         if(doc){
-           console.log("hurray!");
-         }
-              res.send("success");
-       });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('addfav',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 
   });
 
 
   router.post('/getfav'
   , async (req,res) => {
-      const {email} = req.body;
-      try{   
-       
-        User.findOne({email:email},function(err,doc){
-          if(err) throw err;
-          if(doc){
-            console.log(doc.favorite);
-            var fav=doc.favorite
-            Owner.find({name:fav},function(err,doc1){
-              if(doc1){
-                console.log(doc1);
-                   res.send(doc1);
-              }
-              else{
-                console.log("Not found!");
-              }
-            })
-          }
- 
-     });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('getfav',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 
   });
 
   router.put('/updatestatus1'
   , async (req,res) => {
 
-    const {status} = req.body;
-    try{  
-        connection.query(`UPDATE orders set foodstatus=? where orderid=?`,["inkitchen",status],  function(error,results){
-        if(results.length !== 0){
-            console.log(results);
-            res.send(JSON.stringify(results));
-         }else{
-            res.send("failure");
-         }
-        
-     });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('updatestatus1',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 
 router.put('/updatestatus2'
   , async (req,res) => {
 
-    const {status} = req.body;
-    try{  
-        connection.query(`UPDATE orders set foodstatus=? where orderid=?`,["delivered",status],  function(error,results){
-        if(results.length !== 0){
-            console.log(results);
-            res.send(JSON.stringify(results));
-         }else{
-            res.send("failure");
-         }
-        
-     });
-    }
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('updatestatus2',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 
 
 router.post('/getinkitchenorders'
   , async (req,res) => {
-    //console.log("This is:"+req.body);
-    const email = req.body.email;
-    try{   
-       
-            connection.query(`select name from restaurant where email=?`,email,  function(error,results){
-            var results=JSON.parse(JSON.stringify(results));
-            console.log(results[0].name);
-            connection.query(`select * from orders where rest_name=? and foodstatus=?`,[results[0].name,"inkitchen"],
-              function(error,results){
-                console.log("jabbbbb "+ results);
-                res.send(JSON.stringify(results));
-            });
-           
-            });
-         }
-        
-    
-    catch(err){
-        console.error(err.message);
-        res.send("server error");
-    }
+    kafka.make_request('getinkitchenorders',req.body, function(err,results){
+      console.log('in result');
+      console.log(results);
+      res.send(results);
+  });
 }
 );
 

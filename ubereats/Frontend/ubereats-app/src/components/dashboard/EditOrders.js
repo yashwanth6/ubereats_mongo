@@ -12,10 +12,10 @@ export const EditOrders= ({setAlert}) => {
     
     useEffect(() => {
         async function fetchData() {
-          const req = await axios.post('/api/restaurant/getoneorder',{id:e});
-          var string=JSON.stringify(req.data);
-          var json =  JSON.parse(string);
-          console.log(json[0]);
+          const req = await axios.post('/api/restaurant/getoneorder',{_id:e});
+          //var string=JSON.stringify(req.data);
+          var json =  req.data;
+          console.log(json);
           //console.log(json[0].mobile);
           setFormData(json[0])
         }
@@ -24,13 +24,13 @@ export const EditOrders= ({setAlert}) => {
       }, [])
     const [formData, setFormData] = useState(
         {
-        id:e,
-        item: '',
+        _id:e,
+        item_name: '',
         foodtype: '',
         price:''
     });
    
-    const {id,item,foodtype,price} = formData;
+    const {_id,item_name,foodtype,price} = formData;
 
     const onChange = e => setFormData({ ...formData, [e.target.name] : e.target.value});
 
@@ -44,7 +44,7 @@ export const EditOrders= ({setAlert}) => {
                 }
             }
 
-            const body = JSON.stringify({id,item,foodtype,price});
+            const body = JSON.stringify({_id,item_name,foodtype,price});
             console.log(body);
             
             
@@ -72,12 +72,12 @@ export const EditOrders= ({setAlert}) => {
             <h2 className="form-title">Register Here!!</h2>
                 
             <div className="form-group">
-            <label htmlFor="item"><b>Item</b></label>
+            <label htmlFor="item_name"><b>item_name</b></label>
             <input className='form-control' 
                     type="text" 
-                    placeholder="Enter Item name"
-                    name='item'
-                    value={item}
+                    placeholder="Enter item_name name"
+                    name='item_name'
+                    value={item_name}
                     onChange={e => onChange(e)}
                     required pattern="[A-Za-z ]{2,}"
                  />   

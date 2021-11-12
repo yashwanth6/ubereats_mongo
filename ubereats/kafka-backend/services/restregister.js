@@ -1,4 +1,4 @@
-var User =require('../models/User');
+var Owner =require('../models/R_Owner');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -15,7 +15,7 @@ async function handle_request(msg, callback){
         const { name, email, password, location } = msg;
 
         try {
-          let user = await User.findOne({ email });
+          let user = await Owner.findOne({ email });
     
           if (user) {
 
@@ -26,7 +26,7 @@ async function handle_request(msg, callback){
     
           
     
-          user = new User({
+          user = new Owner({
             name,
             email,
             password,

@@ -1,10 +1,14 @@
 var User =require('../models/User');
 var Owner =require('../models/R_Owner');
+const bcrypt = require('bcryptjs');
 const connectDB = require('../config/db');
 
 connectDB();
 
 async function handle_request(msg, callback){
+  const { topic } = msg;
+    console.log('In topic: ', topic);
+    console.log(JSON.stringify(callback));
     var response = {};
     const email = msg.email;
     const password= msg.password;

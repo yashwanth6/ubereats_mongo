@@ -27,12 +27,12 @@ const User_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
         
         return(
             <tr>
-                <td>{book.orderid}</td>
+                <td>{book._id}</td>
                 <td>{book.email}</td>
-                <td>{JSON.parse(book.items).map(tb => {return(
+                <td>{book.items.map(tb => {return(
                      <tr>
                     <tr>ID: {tb.id}</tr>
-                    <tr>Item name: {tb.item}</tr>
+                    <tr>Item name: {tb.item_name}</tr>
                     <tr>Item Type: {tb.foodtype}</tr>
                     <tr>Price: {tb.price}</tr>
                     </tr>)})}

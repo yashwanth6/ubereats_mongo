@@ -89,12 +89,12 @@ router.post(
   kafka.make_request('register',req.body, function(err,results){
       console.log('in result');
       console.log(results);
-      if(results.status==400){
-        res.send("failure");
-      }
-      else{
-      res.json(results);
-      }
+      // if(results.status==400){
+      //   res.send("failure");
+      // }
+      // else{
+      // res.json(results);
+      // }
   });
 });
 

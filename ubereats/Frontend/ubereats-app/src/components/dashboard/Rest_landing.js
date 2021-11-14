@@ -24,7 +24,11 @@ const Rest_landing = (props)=> {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [funct, setFunct] = useState("");
     const [status,setStatus] = useState(false);
+    const [instructions, setInstructions] = useState("");
+    
     console.log(cart);
+
+
     useEffect(() => {
       async function fetchData() {
         
@@ -42,21 +46,28 @@ const Rest_landing = (props)=> {
 
       fetchData();
     }, [])
+
     useEffect(()=>{
         total();
         setStatus(true);
     },[cart])
+
+
     useEffect(()=>{
+        console.log("cart"+ JSON.stringify(cart));
         if(funct == "abc" && (JSON.stringify(cart) != "[]"))
         {
             
+        console.log(instructions);
         axios.post('/api/restaurant/cart',{rest_name:
             localStorage.getItem('rest_name'),cart:cart,email:localStorage.getItem('email'),total:carttotal,
-            delivery:localStorage.getItem('deliverytype')
+            instructions:instructions,delivery:localStorage.getItem('deliverytype')
         });
         }
         setFunct("deb");
     },[funct])
+
+
     const total = () => {
         let totalVal = 0;
         for(let i=0; i<cart.length;i++)
@@ -91,14 +102,15 @@ const Rest_landing = (props)=> {
     const handleQuantityIncrease = (book) => {
 
 		book.quantity++;
-
-
+        //book.price=book.quantity * book.price;
+        
 	};
 
 	const handleQuantityDecrease = (book) => {
       if(book.quantity >= 1 )
       {
 		book.quantity--;
+        
       }
 	};
 /////////////////////////////////////////////////////
@@ -151,7 +163,26 @@ const Rest_landing = (props)=> {
         <tr>
             <td>{el.rest_name}</td>
             <td>{el.item_name}</td>
-            <td>{el.quantity}</td>
+            <td>
+             
+
+            <button onClick={() => handleQuantityIncrease(el)}>    
+                                <a href="#" class="btn btn-info btn-lg">
+                                <span class="glyphicon glyphicon-plus"></span> +
+                                </a>  
+            </button>
+                                <span> {el.quantity} </span>
+            <button onClick={() => handleQuantityDecrease(el)}>
+                                <a href="#" class="btn btn-info btn-lg">
+                                <span class="glyphicon glyphicon-minus"></span> -
+                                </a>
+            </button>
+
+
+
+
+            </td>
+            <td>{el.price}</td>
             <td><button onClick={()=> removecart(el)}>Remove from cart</button></td>
             
         </tr>
@@ -169,6 +200,13 @@ const Rest_landing = (props)=> {
         }
         setFunct("abc");
     }
+
+    const functpop = () => {
+        
+        setFunct("abc");
+    }
+
+    
 
     return (
         
@@ -207,22 +245,30 @@ const Rest_landing = (props)=> {
                                 <h2>cart:</h2>
                                 {cartItems}
                             </div>
+                            <input
+                                type="text"
+                                value={instructions}
+                                onChange={e => setInstructions(e.target.value)}
+                            />
                             <div>
                                 Total : {carttotal}
                             </div>
+
                             <div>
                                 Alert message : {alertt}
                             </div>
                         </table>
                 </div> 
-                <Popup trigger = {buttonPopup} setTrigger={setButtonPopup} >
+                <Popup trigger = {buttonPopup} setTrigger={setButtonPopup} 
+                >
                    
                    Items: {details1}
                    
                    <tr><b>Total : </b> {carttotal}</tr>
                    <Link to="/dashboard">
-                   <button >
-                        Exit
+                   <input type="submit"  className="form-submit"  />
+                   <button>
+                        Place Order
                    </button>
                    </Link>
                 </Popup>

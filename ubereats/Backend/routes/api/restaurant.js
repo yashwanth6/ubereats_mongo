@@ -254,6 +254,7 @@ router.post('/get_items'
 
 router.post('/cart'
   , async (req,res) => {
+    console.log(JSON.stringify(req.body))
     kafka.make_request('cart',req.body, function(err,results){
       console.log('in result');
       console.log(results);
@@ -397,6 +398,33 @@ router.put('/updatestatus2'
 }
 );
 
+router.put('/updatestatus3'
+  , async (req,res) => {
+
+    const {status} = req.body;
+    try{  
+        
+         Order.findOneAndUpdate({_id:status},{$set:{foodstatus:"cancelled"}},{new: true},function(err,doc){
+               if(err) throw err;
+               if(doc){
+                   res.send(doc);
+               }
+               else{
+                   res.send("failure");
+               }
+         });
+      
+    
+    
+    }
+       
+    catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+}
+);
+
 
 router.post('/getinkitchenorders'
   , async (req,res) => {
@@ -407,5 +435,41 @@ router.post('/getinkitchenorders'
   });
 }
 );
+
+
+
+router.post('/getcancelledorders'
+  , async (req,res) => {
+    //console.log("This is:"+req.body);
+    const email = req.body.email;
+    try{   
+       
+      Owner.findOne({email:email},function(err,doc){
+        if(err) throw err;
+        if(doc){
+          console.log(doc.name);
+          Order.find({rest_name:doc.name,foodstatus:"cancelled"},function(err,doc1){
+            if(doc1){
+              console.log(doc1);
+                 res.send(doc1);
+            }
+            else{
+              console.log("Not found!");
+            }
+          })
+        }
+
+   });
+         }
+        
+    
+    catch(err){
+        console.error(err.message);
+        res.send("server error");
+    }
+}
+);
+
+
 
 module.exports = router;

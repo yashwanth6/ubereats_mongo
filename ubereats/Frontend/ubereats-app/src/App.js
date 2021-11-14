@@ -28,6 +28,7 @@ import Dashboard2 from './components/dashboard/Dashboard2';
 import EditOrders from './components/dashboard/EditOrders';
 import UserFav from './components/dashboard/UserFav';
 import Inkitchen_Orders from './components/dashboard/Inkitchen_Orders';
+import Cancelled_Orders from './components/dashboard/Cancelled_Orders';
 if(localStorage.token){
   setAuthToken(localStorage.token);
 }
@@ -68,6 +69,7 @@ const App = () => {
               <Route exact path="/EditOrders" component={EditOrders}/>
               <Route exact path="/UserFav" component={UserFav}/>
               <Route exact path="/Inkitchen_Orders" component={Inkitchen_Orders}/>
+              <Route exact path="/Cancelled_Orders" component={Cancelled_Orders}/>
             </Switch>
           </section>
       </Fragment>

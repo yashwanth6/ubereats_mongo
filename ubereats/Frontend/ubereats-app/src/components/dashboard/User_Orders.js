@@ -39,6 +39,14 @@ const User_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
            alert("status updated successfully");
        }
      }
+
+     const sub3 = (e) => {
+        console.log(e);
+        const stat = axios.put('/api/restaurant/updatestatus3',{status:e});
+       if(stat.data!=='failure'){
+           alert("status updated successfully");
+       }
+     }
     
     const [people, setPeople] = useState([]);
     
@@ -85,6 +93,12 @@ const User_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
                 <Link to ="/Rest_Dash">
                 <button onClick={(e)=> sub2(book._id)}>
                                     Delivered
+                                </button>
+                </Link>
+
+                <Link to ="/Cancelled_Orders">
+                <button onClick={(e)=> sub3(book._id)}>
+                                    Cancel
                                 </button>
                 </Link>
                 

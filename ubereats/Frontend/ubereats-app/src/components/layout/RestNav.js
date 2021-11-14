@@ -17,6 +17,9 @@ const RestNav = () => {
           <li className="nav-item" >
             <Link to="/InKitchen_Orders" className="nav-link">In-Kitchen</Link>
           </li>
+          <li className="nav-item" >
+            <Link to="/Cancelled_Orders" className="nav-link">Cancelled Orders</Link>
+          </li>
           
           <li className="nav-item" >
           <Link to="/Rest_additems" className="nav-link">

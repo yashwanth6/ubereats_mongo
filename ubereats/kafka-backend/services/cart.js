@@ -1,11 +1,11 @@
 
-
+var Order =require('../models/Orders');
 async function handle_request(msg, callback){
   
     var response = {};
     
-    console.log(req.body);
-    const {rest_name,email,total,delivery} = msg;
+    //console.log(req.body);
+    const {rest_name,email,total,delivery,instructions} = msg;
     const it=JSON.parse(JSON.stringify(msg.cart));
     console.log("hi:   "+it);
     try{   
@@ -18,11 +18,12 @@ async function handle_request(msg, callback){
                   price:total,
                   foodstatus:"active",
                   email,
-                  delivery
+                  delivery,
+                  instructions
                 });
                 
                 order.save();
-                res.send("success");
+                callback(null,"success");
               }
               else{
                 console.log("Item cant be added!");

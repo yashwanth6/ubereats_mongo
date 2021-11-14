@@ -266,9 +266,9 @@ const Rest_landing = (props)=> {
                    
                    <tr><b>Total : </b> {carttotal}</tr>
                    <Link to="/dashboard">
-                   <input type="submit"  className="form-submit"  />
+                   
                    <button>
-                        Place Order
+                        Dashboard
                    </button>
                    </Link>
                 </Popup>

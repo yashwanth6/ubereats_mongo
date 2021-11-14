@@ -37,6 +37,7 @@ const Prev_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
 
         
         <td>{ite._id}</td>
+        <td>{ite.rest_name}</td>
        <td> {arrit.map((book) => {
             //console.log(book);
             return(
@@ -77,6 +78,7 @@ const Prev_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Items</th>
                                     <th>Price</th>

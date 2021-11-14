@@ -21,7 +21,7 @@ async function handle_request(msg, callback){
 
               response.status = 400;
               response.message = 'User already exists';
-             return callback(null, "failure");
+             return callback(null, response);
           }
     
           
@@ -53,7 +53,7 @@ async function handle_request(msg, callback){
               if (err) throw err;
               response.status = 200;
               response.message = {token};
-             return callback(null, "success");
+             return callback(null, response);
             }
           );
         
@@ -62,7 +62,7 @@ async function handle_request(msg, callback){
         console.error(err.message);
         response.status = 500;
         response.message = 'Server Error';
-        return callback(null, "failure");
+        return callback(null, response);
     }
 }
     

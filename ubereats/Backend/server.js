@@ -7,7 +7,7 @@ var cors = require('cors');
 const connectDB = require('./config/db');
 const path = require('path');
 
-app.use(cors({origin:"http://3.142.197.52:3000", credentials:true}));
+app.use(cors({origin:"http://18.117.73.186:3000", credentials:true}));
 
 app.get('/',(req,res) => res.send('API Running'));
 

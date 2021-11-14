@@ -74,6 +74,7 @@ const User_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
                     <tr>Item Type: {tb.foodtype}</tr>
                     <tr>Price: {tb.price}</tr>
                     </tr>)})}
+                    <tr>{book.instructions}</tr>
                 </td>
                 <td>{book.foodstatus}</td>
                 <td>

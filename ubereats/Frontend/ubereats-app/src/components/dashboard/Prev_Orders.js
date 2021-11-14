@@ -22,6 +22,14 @@ const Prev_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
       fetchData();
     }, [])
 
+    const sub3 = (e) => {
+        console.log(e);
+        const stat = axios.put('/api/restaurant/updatestatus3',{status:e});
+       if(stat.data!=='failure'){
+           alert("status updated successfully");
+       }
+     }
+
     let details = people.map((ite) => {
         let arrit=ite.items;
         return(
@@ -42,6 +50,9 @@ const Prev_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
             </td>
             <td>{ite.price}</td>
             <td>{ite.foodstatus}</td>
+            <td><button onClick={(e)=> sub3(ite._id)}>
+                                    Cancel
+                                </button></td>
             </tr>
         )
     })
@@ -68,8 +79,9 @@ const Prev_Orders = ({getCurrentProfile,auth:{user},profile:{profile,loading}})=
                                 <tr>
                                     <th>Name</th>
                                     <th>Items</th>
+                                    <th>Price</th>
                                     <th>Status</th>
-                                    <th>Delivery type</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
